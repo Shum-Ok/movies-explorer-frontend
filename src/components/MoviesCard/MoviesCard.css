@@ -83,6 +83,11 @@
     grid-template-rows: 170px 31px;
   }
 
+  .movie__delete {
+    top: 10px;
+    left: 269px;
+  }
+
   .movie__title {
     font-size: 12px;
     line-height: 15px;

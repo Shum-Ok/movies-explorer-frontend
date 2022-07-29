@@ -67,6 +67,12 @@
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
+  transition: opacity .2s linear;
+  cursor: pointer;
+}
+
+.form__submit:hover {
+  opacity: .6;
 }
 
 .form__text {
@@ -83,6 +89,11 @@
   margin-left: 6px;
   color: #4285F4;
   text-decoration: none;
+  transition: opacity .2s linear;
+}
+
+.form__link:hover {
+  opacity: .6;
 }
 
 @media screen and (max-width: 1060px) {

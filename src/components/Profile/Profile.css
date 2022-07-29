@@ -54,6 +54,11 @@
   font-size: 13px;
   line-height: 16px;
   color: #FFFFFF;
+  transition: opacity .2s linear;
+}
+
+.profile__lin:hover {
+  opacity: .6;
 }
 
 .profile__link_out {

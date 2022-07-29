@@ -6,7 +6,7 @@ function Login() {
   return (
     <div className='login'>
       <div className='login__content'>
-      <img className='login__logo' src={logo} alt='Логотип' />
+      <a href='/'><img className='login__logo' src={logo} alt='Логотип' /></a>
         <h2 className='login__title'>Рады видеть!</h2>
         <form className='form' method="post">
           <label className='form__label'>E-mail</label>

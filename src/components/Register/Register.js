@@ -6,7 +6,7 @@ function Register() {
   return (
     <div className='register'>
       <div className='register__content'>
-      <img className='register__logo' src={logo} alt='Логотип' />
+      <a href='/'><img className='register__logo' src={logo} alt='Логотип' /></a>
         <h2 className='register__title'>Добро пожаловать!</h2>
         <form className='form' method="post">
           <label className='form__label'>Имя</label>
