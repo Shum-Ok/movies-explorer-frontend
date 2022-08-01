@@ -1,0 +1,12 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/InterWeb/inter.css);
+
+@import url(/src/components/App/App.css);
+@import url(/src/components/Header/Header.css);
+@import url(/src/components/Main/Main.css);
+@import url(/src/components/Footer/Footer.css);
+
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+}
