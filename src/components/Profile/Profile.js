@@ -1,23 +1,80 @@
+import { useState, useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+// utils
+import mainApi from '../../utils/MainApi';
+
 import './Profile.css';
 
-function Profile() {
+function Profile({ onSignOut }) {
+  const currentUser = useContext(CurrentUserContext)
+  const [userName, setUserName] = useState(currentUser.name)
+  const [newUserName, setNewUserName] = useState(currentUser.name)
+  const [userEmail, setUserEmail] = useState(currentUser.email)
+  const [newUserEmail, setNewUserEmail] = useState(currentUser.email)
+  const [textInfo, setTextInfo] = useState(null)
+  const [isVisibleButton, setVisibleButton] = useState(false);
+
+  function handelSubmit(e) {
+    e.preventDefault()
+
+    mainApi.setUserInfo(newUserName, newUserEmail)
+      .then((res) => {
+        console.log('res ===', res)
+        setVisibleButton(false);
+        setUserName(newUserName);
+        setUserEmail(newUserEmail);
+        setTextInfo('Данные успешно изменены.')
+      })
+      .catch(err => {
+        setTextInfo('Что то пошло не так.')
+        console.log('err ===', err)
+      })
+  }
+
+  function handleNameChange(e) {
+    const name = e.target.value
+    setNewUserName(name)
+    console.log('имя -', userName)
+    console.log('вводимое в поле имя -', name)
+
+    if(name !== userName) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
+  }
+
+  function handleEmailChange(e) {
+    const email = e.target.value
+    setNewUserEmail(email)
+
+    if(email !== userEmail) {
+      setVisibleButton(true);
+    } else {
+      setVisibleButton(false);
+    }
+  }
+
   return (
     <section className='profile'>
-      <div className='profile__content'>
-        <h2 className='profile__title'>Привет, Алексей!</h2>
-        <div className='profile__item'>
-          <p className='profile__item-value profile__item-value_weight'>Имя</p>
-          <p className='profile__item-value'>Алексей</p>
+      <form className='profile-form' onSubmit={handelSubmit}>
+        <div className='profile-form__content'>
+          <h2 className='profile-form__title'>{`Привет, ${newUserName}`}</h2>
+          <div className='profile-form__item'>
+            <p className='profile-form__item-value profile-form__item-value_weight'>Имя</p>
+            <input className='profile-form__item-value profile-form__item-value_input' value={newUserName} onChange={handleNameChange} />
+          </div>
+          <div className='profile-form__item'>
+            <p className='profile-form__item-value profile-form__item-value_weight'>E-mail</p>
+            <input className='profile-form__item-value profile-form__item-value_input' value={newUserEmail} onChange={handleEmailChange} />
+          </div>
         </div>
-        <div className='profile__item'>
-          <p className='profile__item-value profile__item-value_weight'>E-mail</p>
-          <p className='profile__item-value'>pochta@yandex.ru</p>
+        <div className='profile-form__buttons'>
+          <span>{textInfo}</span>
+          <button className='profile-form__button profile-form__button_submit' type='submit' disabled={!isVisibleButton}>Редактировать</button>
+          <button className='profile-form__button profile-form__button_out' type='button' onClick={onSignOut}>Выйти из аккаунта</button>
         </div>
-      </div>
-      <div className='profile__nav-link'>
-        <a className='profile__link' href='/'>Редактировать</a>
-        <a className='profile__link profile__link_out' href='/'>Выйти из аккаунта</a>
-      </div>
+      </form>
     </section>
   )
 }
