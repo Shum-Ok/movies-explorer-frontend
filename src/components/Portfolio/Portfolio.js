@@ -1,3 +1,4 @@
+// css
 import './Portfolio.css';
 
 function Portfolio() {
@@ -6,7 +7,7 @@ function Portfolio() {
       <h3 className='portfolio__title'>Портфолио</h3>
       <ul className='portfolio__list'>
         <li className='portfolio__list-item'>
-          <a className='portfolio__link' href="https://shum-ok.github.io/how-to-learn/" target='_blank' rel='noreferrer'>Статичный сайт</a>
+          <a className='portfolio__link' href='https://shum-ok.github.io/how-to-learn/' target='_blank' rel='noreferrer'>Статичный сайт</a>
         </li>
         <li className='portfolio__list-item'>
           <a className='portfolio__link' href='https://shum-ok.github.io/yet-another-project/' target='_blank' rel='noreferrer'>Адаптивный сайт</a>

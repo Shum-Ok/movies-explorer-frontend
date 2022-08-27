@@ -1,8 +1,9 @@
+// react
 import { useState, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 // utils
 import mainApi from '../../utils/MainApi';
-
+// css
 import './Profile.css';
 
 function Profile({ onSignOut }) {
@@ -12,35 +13,32 @@ function Profile({ onSignOut }) {
   const [userEmail, setUserEmail] = useState(currentUser.email)
   const [newUserEmail, setNewUserEmail] = useState(currentUser.email)
   const [textInfo, setTextInfo] = useState(null)
-  const [isVisibleButton, setVisibleButton] = useState(false);
+  const [isVisibleButton, setVisibleButton] = useState(false)
 
   function handelSubmit(e) {
     e.preventDefault()
 
     mainApi.setUserInfo(newUserName, newUserEmail)
       .then((res) => {
-        console.log('res ===', res)
-        setVisibleButton(false);
-        setUserName(newUserName);
-        setUserEmail(newUserEmail);
+        setVisibleButton(false)
+        setUserName(newUserName)
+        setUserEmail(newUserEmail)
         setTextInfo('Данные успешно изменены.')
       })
       .catch(err => {
         setTextInfo('Что то пошло не так.')
-        console.log('err ===', err)
+        console.log('Ошибка сохранения данных ', err)
       })
   }
 
   function handleNameChange(e) {
     const name = e.target.value
     setNewUserName(name)
-    console.log('имя -', userName)
-    console.log('вводимое в поле имя -', name)
 
     if(name !== userName) {
-      setVisibleButton(true);
+      setVisibleButton(true)
     } else {
-      setVisibleButton(false);
+      setVisibleButton(false)
     }
   }
 
@@ -49,9 +47,9 @@ function Profile({ onSignOut }) {
     setNewUserEmail(email)
 
     if(email !== userEmail) {
-      setVisibleButton(true);
+      setVisibleButton(true)
     } else {
-      setVisibleButton(false);
+      setVisibleButton(false)
     }
   }
 
@@ -59,7 +57,7 @@ function Profile({ onSignOut }) {
     <section className='profile'>
       <form className='profile-form' onSubmit={handelSubmit}>
         <div className='profile-form__content'>
-          <h2 className='profile-form__title'>{`Привет, ${newUserName}`}</h2>
+          <h2 className='profile-form__title'>{`Привет, ${newUserName}!`}</h2>
           <div className='profile-form__item'>
             <p className='profile-form__item-value profile-form__item-value_weight'>Имя</p>
             <input className='profile-form__item-value profile-form__item-value_input' value={newUserName} onChange={handleNameChange} />

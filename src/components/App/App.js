@@ -1,8 +1,9 @@
-import './App.css';
+// react
 import { useState, useEffect } from 'react';
-import { Route, Switch, Redirect, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory, useLocation, withRouter } from 'react-router-dom';
+// context
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-// import components
+// components
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
@@ -14,89 +15,87 @@ import Movies from '../Movies/Movies';
 import PageNotFound from '../PageNotFound/PageNotFound';
 // HOC
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-// import utils
+// utils
 import mainApi from '../../utils/MainApi';
+// css
+import './App.css';
 
 function App() {
-  const history = useHistory()
-
   const [currentUser, setCurrentUser] = useState({})
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true)
+  const [messageError, setMessageError] = useState({})
 
-  const [messageError, setMessageError] = useState({});
-
-  const { pathname } = useLocation();
+  const history = useHistory()
+  const { pathname } = useLocation()
 
   useEffect(() => {
-    handlTokenCheck();
-  }, []);
+    handlTokenCheck()
+  }, [])
 
   // проверка токена
   function handlTokenCheck() {
     const token = localStorage.getItem('token')
     if(token) {
-      mainApi
-        .tokenValid(token)
+      mainApi.tokenValid(token)
         .then((user) => {
           if(user) {
-            setLoggedIn(true);
-            setCurrentUser(user);
-            mainApi.updateToken();
+            setCurrentUser(user)
+            setLoggedIn(true)
+          } else {
+            setLoggedIn(false)
           }
-          console.log('user =>', user)
         })
         .catch((err) => {
-          console.log('err =>', err);
+          console.log('Ошибка при провеке токена ', err);
         });
       }
   }
   // регистрация
   function handleRegister(password, email, name) {
-    mainApi
-      .register(password, email, name)
+    mainApi.register(password, email, name)
       .then(user => {
-        console.log('user = ', user)
         if(user) {
-          console.log('Успешно зарегистриоровались')
-          console.log('Сразу идет авторизация')
           handleLogin(password, user.email)
         }
       })
       .catch(setMessageError({
         text: 'Такой E-mail уже занят'
       }))
-      // .finally(() => setIsInfoTooltipPopupOpen(true)) // что делать в любои случае
   }
   // логирование
   function handleLogin(password, email) {
-    mainApi
-      .login(password, email) // при логировании сервер возвращает чисто токен
+    mainApi.login(password, email)
       .then(res => {
         if(res.token) {
           localStorage.setItem('token', res.token)
-          setCurrentUser(null)
+          mainApi.updateToken()
+          setLoggedIn(true)
           handlTokenCheck()
-          console.log('Успешно авторизовались и перенаправлено на страницу movies')
+          history.push('/movies')
         } else {
           setMessageError({
             text: 'Что-то пошло не так! Попробуйте ещё раз.'
           })
         }
       })
-      .catch((err) => console.log('err =><', err))
+      .catch((err) => console.log('Ошибка при провеке авторизации ', err))
   }
 
   function onSignOut() {
     localStorage.removeItem('token')
+    localStorage.removeItem('movies')
+    localStorage.removeItem('moviesTumbler')
+    localStorage.removeItem('moviesInputSearch')
+    localStorage.removeItem('savedMoviesTumbler')
+    localStorage.removeItem('savedMoviesInputSearch')
     setLoggedIn(false)
-    history.push('/')
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='app'>
-        {pathname === '/' || pathname === '/movies' || pathname === '/saved-movies' || pathname === '/profile' ?
-          <Header loggedIn={loggedIn} /> : ''}
+        {pathname === '/' || pathname === '/profile' || pathname === '/movies' || pathname === '/saved-movies'  ?
+          <Header loggedIn={!loggedIn} /> : ''}
         <Switch>
           <Route exact path='/'>
             <Main />
@@ -104,35 +103,30 @@ function App() {
 
           <ProtectedRoute
             path='/movies'
-            loggedIn={loggedIn}
+            loggedIn={!loggedIn}
             component={Movies}
           />
 
           <ProtectedRoute
             path='/saved-movies'
-            loggedIn={loggedIn}
+            loggedIn={!loggedIn}
             component={SavedMovies}
           />
 
           <ProtectedRoute
             path='/profile'
-            loggedIn={loggedIn}
+            loggedIn={!loggedIn}
             component={Profile}
             onSignOut={onSignOut}
           />
 
           <Route path='/signup'>
-            {!loggedIn ? <Register onRegister={handleRegister} textError={messageError.text} /> : <Redirect to='/movies' />}
+            {loggedIn ? <Register onRegister={handleRegister} textError={messageError.text} /> : <Redirect to='/movies' />}
           </Route>
-          {/* <Route exact path='/signup'>
-            <Register onRegister={handleRegister} textError={messageError.text} />
-          </Route> */}
+
           <Route path='/signin'>
-            {!loggedIn ? <Login onLogin={handleLogin} /> : <Redirect to='/movies' />}
+            {loggedIn ? <Login onLogin={handleLogin} /> : <Redirect to='/movies' />}
           </Route>
-          {/* <Route exact path='/signin'>
-            <Login onLogin={handleLogin} textError={messageError.text} />
-          </Route> */}
 
           <Route path='*'>
             <PageNotFound />
@@ -144,4 +138,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

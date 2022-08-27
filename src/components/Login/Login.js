@@ -1,8 +1,10 @@
-import './Login.css';
-import '../Form/Form.css';
+// react
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+// css
+import './Login.css';
+import '../Form/Form.css';
+// img
 import logo from '../../images/logo.png';
 
 
@@ -11,8 +13,8 @@ function Login({ onLogin, textError }) {
     email: '',
     password: ''
   });
-  const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({})
+  const [isValid, setIsValid] = useState(false)
 
   function handleChange(e) {
     const {name, value} = e.target
@@ -20,8 +22,8 @@ function Login({ onLogin, textError }) {
       ...prev,
       [name]: value
     }))
-    setErrors({...errors, [name]: e.target.validationMessage });
-    setIsValid(e.target.closest('form').checkValidity());
+    setErrors({...errors, [name]: e.target.validationMessage })
+    setIsValid(e.target.closest('form').checkValidity())
   }
 
   function handleSubmit(e) {

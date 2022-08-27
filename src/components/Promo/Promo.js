@@ -1,5 +1,7 @@
-import './Promo.css';
+// img
 import imgErth from '../../images/text__COLOR_landing-logo.svg';
+// css
+import './Promo.css';
 
 function Promo() {
   return (

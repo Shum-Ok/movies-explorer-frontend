@@ -96,16 +96,14 @@ class MainApi {
       .then(onError)
   }
 
-  addMovie(movie) { // создать карточку метотд POST
+  addMovie(movie) { // добавить карточку метотд POST
+    console.log('movie - addMovie', movie)
     return fetch(
       `${this._baseUrl}/movies`,
       {
         method: 'POST',
         headers: this._headers,
-        body: JSON.stringify({
-          name: movie.name,
-          link: movie.link,
-        })
+        body: JSON.stringify(movie)
       })
       .then(onError)
   }
@@ -126,12 +124,12 @@ const onError = res => {
     return res.json()
   }
   return Promise.reject(`
-    ${res.statusText === 'Conflict' ? 'Такая почта занята' : 'Не известная ошибка'}
+  ${res.status === 409 ? 'Такая почта занята' : res.status === 401 ? 'Неверный логин или пароль' : 'Не известная ошибка'}
   `)
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3005',
+  baseUrl: 'https://api.alexey-z.nomoredomains.xyz',
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
