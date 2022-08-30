@@ -20,6 +20,6 @@
 Скрипт написан на ReactJS
 
 **Ссылки**
-* API - https://api.alexey-z.nomoredomains.xyz/
 * Site - https://alexey-z.nomoredomains.xyz/
+* PR - https://github.com/Shum-Ok/movies-explorer-frontend/pull/2
 * IP - 51.250.107.13
