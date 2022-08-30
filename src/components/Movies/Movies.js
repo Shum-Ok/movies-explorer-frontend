@@ -134,7 +134,7 @@ function Movies() {
         localStorage.setItem('moviesInputSearch', inputSearch)
 
         const spliceData = filterData.splice(0, MoviesCount[0])
-        console.log('spliceData', spliceData)
+
         setMoviesShowed(spliceData)
         setMovies(filterData)
         setMoviesShowedWithTumbler(spliceData)

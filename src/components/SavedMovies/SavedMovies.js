@@ -40,6 +40,8 @@ function SavedMovies() {
   async function handleGetMovies(inputSearch, tumbler) {
     setErrorText('')
     setPreloader(true)
+    localStorage.setItem('savedMoviesInputSearch', inputSearch)
+    localStorage.setItem('savedMoviesTumbler', tumbler)
     try {
       const data = movies
       let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()))
@@ -55,23 +57,22 @@ function SavedMovies() {
     }
   }
 
-  function savedMoviesToggle(movie, favorite) {
-    console.log('movie', movie)
-    console.log('favorite', favorite)
-  if (!favorite) {
-    mainApi.deleteMovie(movie._id)
-      .then(res => {
-        setMoviesShowed(res)
-        setMovies(res)
-      })
-      .catch(err => {
+  async function savedMoviesToggle(movie, favorite) {
+    if (!favorite) {
+      try {
+        await mainApi.deleteMovie(movie._id)
+        const newMovies = await mainApi.getMovies()
+        setMoviesShowed(newMovies)
+        setMovies(newMovies)
+      } catch (err) {
         console.log(`Произошла ошибка - ${err}`)
-      })
+      }
     }
   }
 
   useEffect(() => {
     const localStorageMovies = localStorage.getItem('savedMovies')
+
     if (localStorageMovies) {
       setMovies(JSON.parse(localStorageMovies));
       const localStorageMoviesTumbler = localStorage.getItem('savedMoviesTumbler')

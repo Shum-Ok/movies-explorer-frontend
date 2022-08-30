@@ -27,7 +27,6 @@ function MoviesCard({ movie, savedMoviesToggle, saveMovies }) {
   }
 
   useEffect(() => {
-    console.log('saveMovies', saveMovies)
     // debugger
     if(pathname !== '/saved-movies') {
         const savedMovieCard = saveMovies.filter((obj) => {
@@ -45,8 +44,8 @@ function MoviesCard({ movie, savedMoviesToggle, saveMovies }) {
   return (
     <article className='movie'>
       { pathname === '/saved-movies'
-        ? <button className='movie__button movie__button_delete' onClick={handleSavedDelete} > удали</button>
-        : <button className={`movie__button movie__button_saved ${saved ? 'movie__button_saved_active' : ''}`} onClick={handleSavedToogle}>Сохранить</button>
+        ? <button className='movie__button movie__button_delete' onClick={handleSavedDelete} />
+        : <button className={`movie__button movie__button_saved ${saved ? 'movie__button_saved_active' : ''}`} onClick={handleSavedToogle}>{`${!saved ? 'Сохранить' : ''}`}</button>
       }
       <a className="" href={movie.trailerLink}
         target="_blank" rel="noreferrer">
