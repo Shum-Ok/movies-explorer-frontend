@@ -22,7 +22,7 @@ import './App.css';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
-  const [loggedIn, setLoggedIn] = useState(true)
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
   const [messageError, setMessageError] = useState({})
 
   const history = useHistory()
@@ -35,6 +35,7 @@ function App() {
   // проверка токена
   function handlTokenCheck() {
     const token = localStorage.getItem('token')
+
     if(token) {
       mainApi.tokenValid(token)
         .then((user) => {
@@ -121,11 +122,11 @@ function App() {
           />
 
           <Route path='/signup'>
-            {loggedIn ? <Register onRegister={handleRegister} textError={messageError.text} /> : <Redirect to='/movies' />}
+            {!loggedIn ? <Register onRegister={handleRegister} textError={messageError.text} /> : <Redirect to='/movies' />}
           </Route>
 
           <Route path='/signin'>
-            {loggedIn ? <Login onLogin={handleLogin} /> : <Redirect to='/movies' />}
+            {!loggedIn ? <Login onLogin={handleLogin} /> : <Redirect to='/movies' />}
           </Route>
 
           <Route path='*'>
