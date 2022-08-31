@@ -1,6 +1,8 @@
 // react
 import { useState  } from 'react';
 import { Link } from 'react-router-dom';
+// validator
+import isEmail from 'validator/lib/isEmail';
 // img
 import logo from '../../images/logo.png';
 // css
@@ -22,6 +24,13 @@ function Register({ onRegister, textError }) {
       ...prev,
       [name]: value
     }))
+    if (name === 'email') {
+      if (!isEmail(value)) {
+        e.target.setCustomValidity('E-mail введен не корректно');
+      } else {
+        e.target.setCustomValidity('');
+      }
+    }
     setErrors({...errors, [name]: e.target.validationMessage })
     setIsValid(e.target.closest('form').checkValidity())
   }
@@ -68,7 +77,7 @@ function Register({ onRegister, textError }) {
             required />
           <span className={`form__input-error ${errors.password ? 'form__input-error_show' : '' }`}>{errors.password}</span>
           <div className='form__submit-items'>
-            <span className={`form__input-error ${textError ? 'form__input-error_show' : '' }`}>{textError}</span>
+            <span className={`form__input-error ${!textError ? '' : 'form__input-error_show' }`}>Ошибка при регистрации</span>
             <button className={`form__submit ${!isValid ? 'form__submit_disabled' : '' }`} type='submit' disabled={!isValid}>Зарегистрироваться</button>
           </div>
           <p className='form__text'>Уже зарегистрированы?

@@ -23,7 +23,7 @@ import './App.css';
 function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
-  const [messageError, setMessageError] = useState({})
+  const [messageError, setMessageError] = useState(false)
 
   const history = useHistory()
   const { pathname } = useLocation()
@@ -59,9 +59,7 @@ function App() {
           handleLogin(password, user.email)
         }
       })
-      .catch(setMessageError({
-        text: 'Такой E-mail уже занят'
-      }))
+      .catch(setMessageError(true))
   }
   // логирование
   function handleLogin(password, email) {
@@ -74,9 +72,7 @@ function App() {
           handlTokenCheck()
           history.push('/movies')
         } else {
-          setMessageError({
-            text: 'Что-то пошло не так! Попробуйте ещё раз.'
-          })
+          setMessageError(true)
         }
       })
       .catch((err) => console.log('Ошибка при провеке авторизации ', err))
@@ -122,7 +118,7 @@ function App() {
           />
 
           <Route path='/signup'>
-            {!loggedIn ? <Register onRegister={handleRegister} textError={messageError.text} /> : <Redirect to='/movies' />}
+            {!loggedIn ? <Register onRegister={handleRegister} textError={messageError} /> : <Redirect to='/movies' />}
           </Route>
 
           <Route path='/signin'>

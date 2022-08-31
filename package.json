@@ -10,6 +10,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.2.1",
     "react-scripts": "5.0.1",
+    "validator": "^13.7.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -17,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* shum-ok@51.250.107.13:/home/shum-ok/movies-explorer-frontend"
+    "deploy": "npm run build && scp -r ./build/* shum-ok@51.250.107.13:/home/shum-ok/movies-explorer-frontend",
+    "deploy-RP": "npm run build && scp -r ./build/* shumok@192.168.1.40:/home/shumok/web/projects/movies-explorer-frontend"
   },
   "eslintConfig": {
     "extends": [
