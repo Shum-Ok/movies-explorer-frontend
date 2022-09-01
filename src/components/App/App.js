@@ -47,7 +47,8 @@ function App() {
           }
         })
         .catch((err) => {
-          console.log('Ошибка при провеке токена ', err);
+          console.log('Ошибка при провеке токена ', err)
+          localStorage.removeItem('token')
           setLoggedIn(false)
         });
       }
