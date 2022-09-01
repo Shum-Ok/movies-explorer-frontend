@@ -48,6 +48,7 @@ function App() {
         })
         .catch((err) => {
           console.log('Ошибка при провеке токена ', err);
+          setLoggedIn(false)
         });
       }
   }
