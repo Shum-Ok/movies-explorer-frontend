@@ -27,7 +27,6 @@ function MoviesCard({ movie, savedMoviesToggle, saveMovies }) {
   }
 
   useEffect(() => {
-    // debugger
     if(pathname !== '/saved-movies') {
         const savedMovieCard = saveMovies.filter((obj) => {
             return obj.movieId === movie.id

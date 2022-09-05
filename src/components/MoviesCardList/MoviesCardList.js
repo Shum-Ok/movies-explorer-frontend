@@ -7,25 +7,22 @@ import './MoviesCardList.css';
 
 function MoviesCardList ({ movies, saveMovies, savedMoviesToggle, handleMore, moviesMore }) {
   const { pathname } = useLocation()
-  // console.log('movies', movies)
   return (
     <section className='movies-card-list'>
-      
-        
-        { movies.length > 0 ? (
-          <div className='movies-card-list__items'>
-          {movies.map((movie) => (
-            <MoviesCard
-              key={movie.id || movie.movieId}
-              movie={movie}
-              saveMovies={saveMovies}
-              savedMoviesToggle={savedMoviesToggle}
-            />
-          ))}
-        </div>) : (
-          <div className='movies-card-list__text'>Ничего не найдено</div>
-        )}
-     
+        {
+          movies.length > 0 ? (
+            <div className='movies-card-list__items'> {
+              movies.map((movie) => (
+                <MoviesCard
+                  key={movie.id || movie.movieId}
+                  movie={movie}
+                  saveMovies={saveMovies}
+                  savedMoviesToggle={savedMoviesToggle}
+                />
+              ))
+            } </div>
+          ) : ( <div className='movies-card-list__text'>Ничего не найдено</div> )
+        }
 
       { moviesMore.length > 0 &&  pathname !== '/saved-movies' ? (
           <button
