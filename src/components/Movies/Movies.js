@@ -11,6 +11,7 @@ import mainApi from '../../utils/MainApi';
 import './Movies.css';
 
 function Movies() {
+  const [moviesAll, setMoviesAll] = useState([])
   const [movies, setMovies] = useState(null)
   const [saveMovies, setSaveMovies] = useState([])
   const [moviesTumbler, setMoviesTumbler] = useState(false)
@@ -34,7 +35,16 @@ function Movies() {
   }, [])
 
   useEffect(() => {
-    mainApi.getMovies()
+    moviesApi.getMovies() // запросили все фильмы и сохранили их в localStorage
+      .then(data => {
+        localStorage.setItem('moviesAll', JSON.stringify(data))
+        setMoviesAll(JSON.parse(localStorage.getItem('moviesAll')))
+      })
+      .catch((err) => {
+        console.log('Ошибка при запросе ', err)
+      });
+
+    mainApi.getMovies() // запрашивает сохраненые фильмы
       .then(data => {
         setSaveMovies(data)
       })
@@ -116,59 +126,62 @@ function Movies() {
     }
   }
 
-  function handleGetMovies(inputSearch) {
-    setMoviesTumbler(false)
-    localStorage.setItem('moviesTumbler', false)
+  function handleGetMovies(inputSearch, tumbler) {
     if (!inputSearch) {
-      setErrorText('Ошибка')
+      setErrorText('Нужно ввести ключевое слово')
       return false
     }
     setErrorText('')
-    setPreloader(true)
 
-    moviesApi.getMovies()
-      .then(data => {
-        let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()))
+    if(tumbler) {
+      let filterDataDuration = moviesAll.filter(({ duration }) => duration <= 40)
+      const filterDataDurationFound = filterDataDuration.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()))
 
-        localStorage.setItem('movies', JSON.stringify(filterData))
-        localStorage.setItem('moviesInputSearch', inputSearch)
+      localStorage.setItem('movies', JSON.stringify(filterDataDurationFound))
+      localStorage.setItem('moviesInputSearch', inputSearch)
 
-        const spliceData = filterData.splice(0, MoviesCount[0])
+      const spliceDataDuration = filterDataDurationFound.splice(0, MoviesCount[0])
 
-        setMoviesShowed(spliceData)
-        setMovies(filterData)
-        setMoviesShowedWithTumbler(spliceData)
-        setMoviesWithTumbler(filterData)
-      })
-      .catch(err => {
-        setErrorText('Ошибка')
+      setMoviesShowed(spliceDataDuration)
+      setMovies(filterDataDurationFound)
+      setMoviesShowedWithTumbler(spliceDataDuration)
+      setMoviesWithTumbler(filterDataDurationFound)
+    } else {
+      let filterData = moviesAll.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()))
 
-        setMovies([])
-        localStorage.removeItem('movies')
-        localStorage.removeItem('moviesTumbler')
-        localStorage.removeItem('moviesInputSearch')
-      })
-      .finally(() => {
-        setPreloader(false)
-      })
+      localStorage.setItem('movies', JSON.stringify(filterData))
+      localStorage.setItem('moviesInputSearch', inputSearch)
+
+      const spliceData = filterData.splice(0, MoviesCount[0])
+
+      setMoviesShowed(spliceData)
+      setMovies(filterData)
+      setMoviesShowedWithTumbler(spliceData)
+      setMoviesWithTumbler(filterData)
+    }
   }
 
   function handleGetMoviesTumbler(tumbler) {
-    let filterDataShowed = []
-    let filterData = []
+    localStorage.setItem('moviesTumbler', tumbler) // сохраняем состояние чек бокса
 
-    if (tumbler) {
-      setMoviesShowedWithTumbler(moviesShowed)
-      setMoviesWithTumbler(movies)
-      filterDataShowed = moviesShowed.filter(({ duration }) => duration <= 40)
-      filterData = movies.filter(({ duration }) => duration <= 40)
-    } else {
-      filterDataShowed = moviesShowedWithTumbler
-      filterData = moviesWithTumbler
+    if(movies) {
+      let filterDataShowed = []
+      let filterData = []
+
+      if (tumbler) {
+        console.log('movies', movies)
+        setMoviesShowedWithTumbler(moviesShowed)
+        setMoviesWithTumbler(movies)
+        filterDataShowed = moviesShowed.filter(({ duration }) => duration <= 40)
+        filterData = movies.filter(({ duration }) => duration <= 40)
+      } else {
+        filterDataShowed = moviesShowedWithTumbler
+        filterData = moviesWithTumbler
+      }
+
+      setMoviesShowed(filterDataShowed)
+      setMovies(filterData)
     }
-
-    setMoviesShowed(filterDataShowed)
-    setMovies(filterData)
   }
 
   function handleMore() {
@@ -188,7 +201,7 @@ function Movies() {
       />
       <div className='movies__border'></div>
       {preloader && <Preloader />}
-      {errorText && <div className="movies__text-error">{errorText}</div>}
+      {errorText && <div className='movies__text-error'>{errorText}</div>}
       {!preloader && !errorText && movies !== null && saveMovies !== null && moviesShowed !== null && (
         <MoviesCardList
           movies={moviesShowed}
