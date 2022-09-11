@@ -1,4 +1,6 @@
+// css
 import './AboutMe.css';
+// img
 import authorImg from '../../images/me.JPG';
 
 function AboutMe() {

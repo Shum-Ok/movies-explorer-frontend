@@ -1,27 +1,4 @@
-.login__logo {
-  transition: opacity .2s linear;
-}
-
-.login__logo:hover {
-  opacity: .6;
-  cursor: pointer;
-}
-
-.login__content {
-  max-width: 396px;
-  margin: 70px auto;
-}
-
-.login__title {
-  margin: 40px 0px;
-  margin-top: 36px;
-  padding: 0;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 29px;
-}
-
-/* .form {
+.form {
   display: flex;
   flex-direction: column;
 }
@@ -50,14 +27,25 @@
 }
 
 .form__input-error {
+  opacity: 0;
   font-size: 10px;
   line-height: 12px;
   color: #EE3465;
   margin-top: 9px;
 }
 
+.form__input-error_show {
+  opacity: 1;
+}
+
+.form__submit-items {
+  display: flex;
+  flex-direction: column;
+  margin-top: 68px;
+}
+
 .form__submit {
-  margin-top: 180px;
+  margin-top: 8px;
   border: none;
   box-sizing: border-box;
   background: #4285F4;
@@ -68,11 +56,21 @@
   font-size: 14px;
   line-height: 17px;
   transition: opacity .2s linear;
+  transition: background .3s ease;
   cursor: pointer;
 }
 
 .form__submit:hover {
-  opacity: .6;
+  opacity: .65;
+}
+
+.form__submit_disabled {
+  background: #808080;
+  transition: background .3s ease;
+}
+.form__submit_disabled:hover {
+  opacity: 1;
+  cursor: auto;
 }
 
 .form__text {
@@ -94,36 +92,15 @@
 
 .form__link:hover {
   opacity: .6;
-} */
-
-@media screen and (max-width: 1060px) {
-  .login__content {
-    margin: 232px auto;
-  }
 }
 
 @media screen and (max-width: 600px) {
-  .login__content {
-    margin: 55px auto;
-    display: flex;
-    flex-direction: column;
-    width: 260px;
-  }
-
-  .login__logo {
-    margin: 0 auto;
-  }
-
-  .login__title {
-    margin: 50px auto;
-  }
-/* 
   .form {
     margin-top: 30px;
   }
 
   .form__submit {
-    margin-top: 268px;
+    margin-top: 156px;
     font-size: 12px;
     line-height: 15px;
   }
@@ -132,5 +109,5 @@
     margin-top: 12px;
     font-size: 12px;
     line-height: 15px;
-  } */
+  }
 }

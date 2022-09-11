@@ -1,15 +1,15 @@
-.profile {
+.profile-form {
   display: flex;
   flex-direction: column;
   margin-top: 50px;
 }
 
-.profile__content {
+.profile-form__content {
   margin: 0 auto;
   min-width: 410px;
 }
 
-.profile__title {
+.profile-form__title {
   margin: 24px 0 124px;
   padding: 0;
   font-weight: 500;
@@ -18,7 +18,7 @@
   text-align: center;
 }
 
-.profile__item {
+.profile-form__item {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #424242;
@@ -26,29 +26,37 @@
   height: 31px;
 }
 
-.profile__item:last-of-type {
+.profile-form__item:last-of-type {
   border-bottom: none;
   padding-top: 18px;
 }
 
-.profile__item-value {
+.profile-form__item-value {
   margin: 0;
   font-size: 11px;
   line-height: 13px;
 }
 
-.profile__item-value_weight {
+.profile-form__item-value_weight {
   font-weight: 500;
 }
 
-.profile__nav-link {
+.profile-form__item-value_input {
+  text-align: end;
+  outline: none;
+  border: none;
+  background: none;
+  color: #fff;
+}
+
+.profile-form__buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 212px;
 }
 
-.profile__link {
+.profile-form__button {
   margin: 8px;
   text-decoration: none;
   font-size: 13px;
@@ -57,42 +65,56 @@
   transition: opacity .2s linear;
 }
 
-.profile__lin:hover {
+.profile-form__button:hover {
+  cursor: pointer;
   opacity: .6;
 }
 
-.profile__link_out {
-  color: #EE3465;
+.profile-form__button:disabled {
+  opacity: .2;
+  cursor: auto;
 }
 
+.profile-form__button_submit {
+  border: none;
+  background: none;
+}
+
+.profile-form__button_out {
+  color: #EE3465;
+  border: none;
+  background: none;
+}
+
+
 @media screen and (max-width: 1060px) {
-  .profile {
+  .profile-form {
     margin-top: 170px;
   }
 
-  .profile__title {
+  .profile-form__title {
     margin: 66px 0 96px;
   }
 
-  .profile__nav-link {
+  .profile-form__buttons {
     margin-top: 202px;
   }
 }
 
 @media screen and (max-width: 1060px) {
-  .profile {
+  .profile-form {
     margin-top: 0;
   }
 
-  .profile__title {
+  .profile-form__title {
     margin-bottom: 80px;
   }
 
-  .profile__content {
+  .profile-form__content {
     min-width: 260px;
   }
 
-  .profile__nav-link {
+  .profile-form__buttons {
     margin-top: 370px;
   }
 }
